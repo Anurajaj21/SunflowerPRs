@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.sunflowerprs.R
 import com.example.sunflowerprs.databinding.ItemPrBinding
 import com.example.sunflowerprs.model.PullReqModel
 
@@ -29,6 +31,11 @@ class PullReqAdapter : RecyclerView.Adapter<PullReqAdapter.PullReqViewHolder>() 
                 prTitle.text = data.title
                 createdAt.text = data.createdAt
                 closedAt.text = data.closedAt
+                Glide.with(userImg)
+                    .load(data.user.profile)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .circleCrop()
+                    .into(userImg)
             }
 
         }
