@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Sunflower PRs</string>
+    <string name="label_owner">Owner :</string>
+    <string name="label_created_at">Created at :</string>
+    <string name="label_closed_at">Closed at :</string>
+    <string name="refresh">Refresh</string>
+    <string name="user_image">UserImage</string>
 </resources>

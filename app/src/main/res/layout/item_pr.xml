@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:padding="4dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline25"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <ImageView
+        android:id="@+id/userImg"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="4dp"
+        android:src="@color/grey"
+        android:contentDescription="@string/user_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/prTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:ellipsize="marquee"
+        android:fontFamily="sans-serif-medium"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="2dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline25"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Here is the sample test for development purpose" />
+
+    <TextView
+        android:id="@+id/labelOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:fontFamily="sans-serif-light"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="1dp"
+        android:text="@string/label_owner"
+        android:textColor="@color/grey"
+        app:layout_constraintStart_toEndOf="@id/guideline25"
+        app:layout_constraintTop_toBottomOf="@id/prTitle" />
+
+    <TextView
+        android:id="@+id/owner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:fontFamily="sans-serif"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="1dp"
+        android:textAlignment="textEnd"
+        android:textColor="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelOwner"
+        app:layout_constraintTop_toBottomOf="@id/prTitle"
+        tools:text="Owner name" />
+
+    <TextView
+        android:id="@+id/labelCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:fontFamily="sans-serif-light"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="1dp"
+        android:text="@string/label_created_at"
+        android:textColor="@color/grey"
+        app:layout_constraintStart_toEndOf="@id/guideline25"
+        app:layout_constraintTop_toBottomOf="@id/labelOwner" />
+
+    <TextView
+        android:id="@+id/createdAt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="sans-serif"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="1dp"
+        android:textAlignment="textEnd"
+        android:textColor="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelCreatedAt"
+        app:layout_constraintTop_toBottomOf="@id/owner"
+        tools:text="created date" />
+
+    <TextView
+        android:id="@+id/labelClosedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:fontFamily="sans-serif-light"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="1dp"
+        android:text="@string/label_closed_at"
+        android:textColor="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline25"
+        app:layout_constraintTop_toBottomOf="@id/labelCreatedAt" />
+
+    <TextView
+        android:id="@+id/closedAt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="sans-serif"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="1dp"
+        android:textAlignment="textEnd"
+        android:textColor="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelClosedAt"
+        app:layout_constraintTop_toBottomOf="@id/createdAt"
+        tools:text="Closed date" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
