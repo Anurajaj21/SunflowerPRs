@@ -9,4 +9,6 @@
     <string name="no_internet_msg">You don\'t have internet connection\nplease connect and retry!</string>
     <string name="retry">Retry</string>
     <string name="no_internet_icon">No internet icon</string>
+    <string name="oops_limit_exceed">Oops! Limit exceed</string>
+    <string name="limit_exceed_msg">You have exceed the request limit, please retry after sometime.</string>
 </resources>

@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sunflowerprs.R
 import com.example.sunflowerprs.adapter.PullReqAdapter
 import com.example.sunflowerprs.databinding.ActivityMainBinding
-import com.example.sunflowerprs.databinding.LayoutNoInternetBinding
+import com.example.sunflowerprs.databinding.LayoutErrorDialogBinding
+import com.example.sunflowerprs.model.PullReqModel
 import com.example.sunflowerprs.utils.AppUtils.isNetworkAvailable
 import com.example.sunflowerprs.utils.AppUtils.toPixel
+import com.example.sunflowerprs.utils.PaginationListener
 import com.example.sunflowerprs.viewModel.MainViewModel
 import java.io.IOException
 
@@ -23,33 +25,74 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val prAdapter by lazy { PullReqAdapter() }
     private lateinit var viewModel: MainViewModel
+
+    private var currentPage: Int = 1
+    private var isLastPage = false
+    private var isLoading = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
+        initVariable()
         initViews()
         initListeners()
         setObservers()
-        if (isNetworkAvailable(this)) getPullRequests()
-        else showNoInternetDialog()
+        if (isNetworkAvailable(this)) {
+            if(viewModel.getTotalList().isEmpty()) getPullRequests()
+        }
+        else showErrorDialog(
+            R.drawable.ic_no_internet,
+            getString(R.string.oops_no_internet),
+            getString(R.string.no_internet_msg)
+        )
     }
 
     private fun initListeners() {
-        binding.toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.refresh -> {
-                    getPullRequests()
-                    true
+        binding.apply {
+            toolbar.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.refresh -> {
+                        handleRefresh()
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
+            rvPullReq.addOnScrollListener(object :
+                PaginationListener(rvPullReq.layoutManager as LinearLayoutManager) {
+                override fun isLoading(): Boolean = isLoading
+
+                override fun isLastPage(): Boolean = isLastPage
+
+                override fun loadMoreItems() {
+                    currentPage++
+                    viewModel.updateCurrentPage(currentPage)
+                    isLoading = true
+                    getPullRequests()
+                }
+            })
         }
     }
 
-    private fun showNoInternetDialog() {
-        val bindingNoInternet = LayoutNoInternetBinding.inflate(LayoutInflater.from(this))
+    private fun handleRefresh() {
+        currentPage = 1
+        viewModel.updateCurrentPage(currentPage)
+        viewModel.clearList()
+        isLastPage = false
+        prAdapter.differ.submitList(arrayListOf())
+        getPullRequests()
+    }
+
+    private fun showErrorDialog(icon: Int, title : String, message : String) {
+        val bindingNoInternet = LayoutErrorDialogBinding.inflate(LayoutInflater.from(this))
+        bindingNoInternet.apply {
+            errorIcon.setImageResource(icon)
+            errorTitle.text = title
+            errorMessage.text = message
+        }
         val dialog = AlertDialog.Builder(this)
             .setCancelable(false)
             .setView(bindingNoInternet.root)
@@ -63,24 +106,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getPullRequests() {
-        viewModel.getClosedPullRequests(1)
+        viewModel.getClosedPullRequests(currentPage)
     }
 
     private fun setObservers() {
         viewModel.loading.observe(this) {
-            if (it) showLoading() else hideLoading()
+            if (it && currentPage == 1) showLoading() else hideLoading()
         }
 
         viewModel.pullRequests.observe(this) { list ->
-            if (list.isNotEmpty()) prAdapter.differ.submitList(list)
+            if(list != null) handlePullRequestList(list)
         }
 
         viewModel.error.observe(this) {
             when (it) {
-                is IOException -> showNoInternetDialog()
-                else -> showToast(it.message.toString())
+                is IOException -> {
+                    showErrorDialog(
+                        R.drawable.ic_no_internet,
+                        getString(R.string.oops_no_internet),
+                        getString(R.string.no_internet_msg)
+                    )
+                }
+                else -> {
+                    if(it.message == "Api request limit exceed") showErrorDialog(
+                        R.drawable.ic_limit_exceed,
+                        getString(R.string.oops_limit_exceed),
+                        getString(R.string.limit_exceed_msg)
+                    )
+                    else showToast(it.message.toString())
+                }
             }
         }
+    }
+
+    private fun handlePullRequestList(list: ArrayList<PullReqModel>) {
+        if(list.isEmpty()) isLastPage = true
+        prAdapter.addItems(list, !isLastPage)
+        isLoading = false
     }
 
     private fun showToast(message: String) {
@@ -99,6 +161,11 @@ class MainActivity : AppCompatActivity() {
             rvPullReq.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE
         }
+    }
+
+    private fun initVariable() {
+        currentPage = viewModel.getCurrentPage()
+        prAdapter.differ.submitList(viewModel.getTotalList())
     }
 
     private fun initViews() {
