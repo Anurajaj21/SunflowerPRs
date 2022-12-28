@@ -15,24 +15,28 @@ import kotlinx.coroutines.launch
 
 class MainViewModel() : ViewModel() {
 
-    private val repository: MainRepository by  lazy { MainRepositoryImp(Retrofit.getClient().create(ApiInterface::class.java)) }
+    private val repository: MainRepository by lazy {
+        MainRepositoryImp(
+            Retrofit.getClient().create(ApiInterface::class.java)
+        )
+    }
     private val _loading = MutableLiveData<Boolean>(false)
-    val loading : LiveData<Boolean>
-    get() = _loading
+    val loading: LiveData<Boolean>
+        get() = _loading
 
     private val _pullsRequests = MutableLiveData<ArrayList<PullReqModel>>()
-    val pullRequests : LiveData<ArrayList<PullReqModel>>
-    get() = _pullsRequests
+    val pullRequests: LiveData<ArrayList<PullReqModel>>
+        get() = _pullsRequests
 
-    private val _error = MutableLiveData<String>()
-    val error : LiveData<String>
-    get() = _error
+    private val _error = MutableLiveData<Exception>()
+    val error: LiveData<Exception>
+        get() = _error
 
-    fun getClosedPullRequests(page : Int){
+    fun getClosedPullRequests(page: Int) {
         _loading.value = true
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             val response = repository.getClosedPullRequests(page)
-            when(response){
+            when (response) {
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     _loading.postValue(false)
@@ -40,7 +44,7 @@ class MainViewModel() : ViewModel() {
                 }
                 is Resource.Error -> {
                     _loading.postValue(false)
-                    _error.postValue(response.exception?.message)
+                    _error.postValue(response.exception)
                 }
             }
         }

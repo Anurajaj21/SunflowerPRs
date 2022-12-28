@@ -12,9 +12,9 @@ import com.example.sunflowerprs.model.PullReqModel
 
 class PullReqAdapter : RecyclerView.Adapter<PullReqAdapter.PullReqViewHolder>() {
 
-    private val differCallback = object : DiffUtil.ItemCallback<PullReqModel>(){
+    private val differCallback = object : DiffUtil.ItemCallback<PullReqModel>() {
         override fun areItemsTheSame(oldItem: PullReqModel, newItem: PullReqModel): Boolean {
-            return  oldItem == newItem
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: PullReqModel, newItem: PullReqModel): Boolean {
@@ -23,10 +23,11 @@ class PullReqAdapter : RecyclerView.Adapter<PullReqAdapter.PullReqViewHolder>() 
 
     }
 
-    val differ = AsyncListDiffer(this,differCallback)
+    val differ = AsyncListDiffer(this, differCallback)
 
-    class PullReqViewHolder(private val binding: ItemPrBinding) : RecyclerView.ViewHolder(binding.root){
-        fun onBind(data : PullReqModel){
+    class PullReqViewHolder(private val binding: ItemPrBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun onBind(data: PullReqModel) {
             binding.apply {
                 prTitle.text = data.title
                 createdAt.text = data.createdAt
@@ -37,7 +38,6 @@ class PullReqAdapter : RecyclerView.Adapter<PullReqAdapter.PullReqViewHolder>() 
                     .circleCrop()
                     .into(userImg)
             }
-
         }
     }
 

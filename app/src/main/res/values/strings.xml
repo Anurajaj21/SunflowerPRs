@@ -5,4 +5,8 @@
     <string name="label_closed_at">Closed at :</string>
     <string name="refresh">Refresh</string>
     <string name="user_image">UserImage</string>
+    <string name="oops_no_internet">Oops! No internet</string>
+    <string name="no_internet_msg">You don\'t have internet connection\nplease connect and retry!</string>
+    <string name="retry">Retry</string>
+    <string name="no_internet_icon">No internet icon</string>
 </resources>
