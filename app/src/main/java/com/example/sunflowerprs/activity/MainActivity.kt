@@ -170,6 +170,7 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
         binding.apply {
             toolbar.inflateMenu(R.menu.main_menu)
+            toolbar.overflowIcon?.setTint(getColor(R.color.grey))
             rvPullReq.apply {
                 layoutManager = LinearLayoutManager(this@MainActivity)
                 adapter = prAdapter
