@@ -18,8 +18,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="4dp"
-        android:src="@color/grey"
         android:contentDescription="@string/user_image"
+        android:src="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline25"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,10 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:ellipsize="marquee"
-        android:singleLine="true"
         android:fontFamily="sans-serif"
         android:paddingHorizontal="6dp"
         android:paddingVertical="1dp"
+        android:singleLine="true"
         android:textAlignment="textEnd"
         android:textColor="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,10 +130,12 @@
         tools:text="Closed date" />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:background="@color/grey"
         android:alpha="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:background="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline25" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

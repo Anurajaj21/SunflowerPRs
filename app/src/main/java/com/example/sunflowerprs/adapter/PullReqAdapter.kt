@@ -10,6 +10,7 @@ import com.example.sunflowerprs.R
 import com.example.sunflowerprs.databinding.ItemLoadingBinding
 import com.example.sunflowerprs.databinding.ItemPrBinding
 import com.example.sunflowerprs.model.PullReqModel
+import com.example.sunflowerprs.utils.AppUtils.getDateTime
 
 class PullReqAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -36,8 +37,8 @@ class PullReqAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun onBindPullRequest(data: PullReqModel) {
             binding.apply {
                 prTitle.text = data.title
-                createdAt.text = data.createdAt
-                closedAt.text = data.closedAt
+                createdAt.text = data.createdAt?.getDateTime()
+                closedAt.text = data.closedAt?.getDateTime()
                 owner.text = data.user?.name
                 Glide.with(userImg)
                     .load(data.user?.profile)
@@ -51,7 +52,7 @@ class PullReqAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class LoadingViewHolder(binding: ItemLoadingBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when(viewType){
+        return when (viewType) {
             VIEW_TYPE_PULL_REQUEST -> PullReqViewHolder(
                 ItemPrBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
@@ -67,7 +68,7 @@ class PullReqAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder){
+        when (holder) {
             is PullReqViewHolder -> holder.onBindPullRequest(differ.currentList[position])
             else -> {}
         }
@@ -75,15 +76,15 @@ class PullReqAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    fun addItems(list : ArrayList<PullReqModel>, loader : Boolean){
+    fun addItems(list: ArrayList<PullReqModel>, loader: Boolean) {
         val newList = arrayListOf<PullReqModel>()
         newList.addAll(differ.currentList)
         if (newList.isNotEmpty()) newList.removeLast()
+        newList.addAll(list)
         if (loader) {
             isLoaderVisible = true
-            list.add(PullReqModel(null, null, null, null))
+            newList.add(PullReqModel(null, null, null, null))
         }
-        newList.addAll(list)
         differ.submitList(newList)
     }
 }

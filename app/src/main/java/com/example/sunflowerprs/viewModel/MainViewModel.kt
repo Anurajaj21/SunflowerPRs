@@ -17,7 +17,7 @@ class MainViewModel() : ViewModel() {
 
     private var currentPage = 1
 
-    private var currentTotalList = arrayListOf<PullReqModel>()
+    private val currentTotalList = arrayListOf<PullReqModel>()
 
     private val repository: MainRepository by lazy {
         MainRepositoryImp(
@@ -44,9 +44,7 @@ class MainViewModel() : ViewModel() {
                 is Resource.Loading -> {}
                 is Resource.Success -> {
                     _loading.postValue(false)
-                    val list = _pullsRequests.value
                     response.data?.let { currentTotalList.addAll(it) }
-                    response.data?.let { list?.addAll(it) }
                     _pullsRequests.postValue(response.data)
                 }
                 is Resource.Error -> {
@@ -57,11 +55,15 @@ class MainViewModel() : ViewModel() {
         }
     }
 
-    fun updateCurrentPage(currentPage : Int) = run { this.currentPage = currentPage }
-    fun getCurrentPage() : Int = currentPage
+    fun updatePullRequestList() {
+        _pullsRequests.value = currentTotalList
+    }
+
+    fun updateCurrentPage(currentPage: Int) = run { this.currentPage = currentPage }
+    fun getCurrentPage(): Int = currentPage
 
     fun getTotalList() = currentTotalList
-    fun clearList(){
+    fun clearList() {
         currentTotalList.clear()
     }
 }

@@ -36,14 +36,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-        initVariable()
         initViews()
         initListeners()
         setObservers()
+        initVariable()
         if (isNetworkAvailable(this)) {
-            if(viewModel.getTotalList().isEmpty()) getPullRequests()
-        }
-        else showErrorDialog(
+            if (viewModel.getTotalList().isEmpty()) getPullRequests()
+        } else showErrorDialog(
             R.drawable.ic_no_internet,
             getString(R.string.oops_no_internet),
             getString(R.string.no_internet_msg)
@@ -86,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         getPullRequests()
     }
 
-    private fun showErrorDialog(icon: Int, title : String, message : String) {
+    private fun showErrorDialog(icon: Int, title: String, message: String) {
         val bindingNoInternet = LayoutErrorDialogBinding.inflate(LayoutInflater.from(this))
         bindingNoInternet.apply {
             errorIcon.setImageResource(icon)
@@ -114,8 +113,8 @@ class MainActivity : AppCompatActivity() {
             if (it && currentPage == 1) showLoading() else hideLoading()
         }
 
-        viewModel.pullRequests.observe(this) { list ->
-            if(list != null) handlePullRequestList(list)
+        viewModel.pullRequests.observe(this) { prList ->
+            if (prList != null) handlePullRequestList(prList)
         }
 
         viewModel.error.observe(this) {
@@ -128,7 +127,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
                 else -> {
-                    if(it.message == "Api request limit exceed") showErrorDialog(
+                    if (it.message == "Api request limit exceed") showErrorDialog(
                         R.drawable.ic_limit_exceed,
                         getString(R.string.oops_limit_exceed),
                         getString(R.string.limit_exceed_msg)
@@ -140,7 +139,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handlePullRequestList(list: ArrayList<PullReqModel>) {
-        if(list.isEmpty()) isLastPage = true
+        isLastPage = list.isEmpty()
         prAdapter.addItems(list, !isLastPage)
         isLoading = false
     }
@@ -165,7 +164,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initVariable() {
         currentPage = viewModel.getCurrentPage()
-        prAdapter.differ.submitList(viewModel.getTotalList())
+        viewModel.updatePullRequestList()
     }
 
     private fun initViews() {

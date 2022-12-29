@@ -5,6 +5,8 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.TypedValue
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 object AppUtils {
@@ -30,5 +32,12 @@ object AppUtils {
             else -> false
         }
         return result
+    }
+
+    fun String.getDateTime(): String? {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+        val outputFormat = SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.ENGLISH)
+        val date = inputFormat.parse(this)
+        return date?.let { outputFormat.format(it) }
     }
 }
