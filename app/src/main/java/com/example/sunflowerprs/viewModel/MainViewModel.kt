@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sunflowerprs.model.PullReqModel
 import com.example.sunflowerprs.model.Resource
-import com.example.sunflowerprs.network.ApiInterface
-import com.example.sunflowerprs.network.Retrofit
 import com.example.sunflowerprs.repository.MainRepository
 import com.example.sunflowerprs.repository.MainRepositoryImp
 import kotlinx.coroutines.Dispatchers
@@ -19,11 +17,7 @@ class MainViewModel() : ViewModel() {
 
     private val currentTotalList = arrayListOf<PullReqModel>()
 
-    private val repository: MainRepository by lazy {
-        MainRepositoryImp(
-            Retrofit.getClient().create(ApiInterface::class.java)
-        )
-    }
+    private val repository: MainRepository by lazy { MainRepositoryImp() }
     private val _loading = MutableLiveData<Boolean>(false)
     val loading: LiveData<Boolean>
         get() = _loading
